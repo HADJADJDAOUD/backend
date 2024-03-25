@@ -6,7 +6,7 @@ const crypto = require("crypto");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please tell us your name!"],
+    // required: [true, "Please tell us your name!"],
   },
   email: {
     type: String,
@@ -14,6 +14,12 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     validate: [validator.isEmail, "Please provide a valid email"],
+  },
+  userType: {
+    type: String,
+    enum: ["admin", "brilliant", "user"],
+    default: "user",
+    select: true,
   },
   password: {
     type: String,
@@ -32,14 +38,20 @@ const userSchema = new mongoose.Schema({
       message: "Passwords are not the same!",
     },
   },
+  photo: {
+    type: String,
+    default: "picture.png",
+  },
   links: {
     type: Array,
   },
   skills: {
     type: Array,
+    default: "there is no skills",
   },
-  eductaion: {
+  education: {
     type: String,
+    default: "esi-sba",
   },
   bio: {
     type: String,

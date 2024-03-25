@@ -1,8 +1,7 @@
-const express = require("express");
 const morgan = require("morgan");
 
 const userRouter = require("./routes/usersRouter");
-
+const contentRouter = require("./routes/contentRouter");
 const AppError = require("./utils/appError");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
@@ -13,8 +12,16 @@ const globalErrorHandler = require("./controllers/errController");
 
 const path = require("path");
 const cookieParser = require("cookie-parser");
-
+const cors = require("cors");
+const express = require("express");
 const app = express();
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Replace with your frontend URL
+    credentials: true,
+  })
+);
 
 // Set Security HTTP headers
 app.use(helmet());
@@ -26,7 +33,7 @@ if (process.env.NODE_ENV === "development") {
 
 // Limit requests from the same API
 const limiter = rateLimit({
-  max: 100,
+  max: 1010,
   windowMs: 60 * 60 * 1000,
   message: "Too many requests from this IP, please try again later",
 });
@@ -34,7 +41,6 @@ app.use("/api", limiter);
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: "10kb" }));
-app.use(cookieParser());
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
@@ -70,8 +76,8 @@ app.use((req, res, next) => {
 
 // Routes
 
+app.use("/api/content", contentRouter);
 app.use("/api/users", userRouter);
-
 // Error handling for undefined routes
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

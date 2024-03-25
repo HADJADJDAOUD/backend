@@ -1,12 +1,23 @@
+const handleFactory = require("./handleFactory");
 const asyncCatcher = require("../utils/asyncCatcher");
-exports.getUsers = asyncCatcher(async (req, res, next) => {
-  const users = await User.find();
-
+const User = require("../models/userModule");
+exports.getAllUsers = asyncCatcher(async (req, res, next) => {
+  const users = await User.find({});
   // Send the users data as a response
   res.status(200).json({
     status: "success",
+    dataLength: users.length,
     data: {
       users,
     },
   });
 });
+exports.getUser = asyncCatcher(async (req, res, next) => {
+  const user = req.user;
+  // Send the user's name and photo as a response
+  res.status(200).json(user);
+});
+
+// exports.getAllUsers=handleFactory.getAll(User)
+
+exports.getUserCv = handleFactory.getOne(User);

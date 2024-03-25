@@ -19,15 +19,15 @@ const createSendToken = (user, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
-
-    httpOnly: true,
+    httpOnly: false,
   };
+  cookieOptions.secure = true;
   if (process.env.NODE_ENV === "production") {
     cookieOptions.secure = true;
   }
   res.cookie("jwt", token, cookieOptions);
+  console.log("cookies are stored");
   // Remove password from output
-
   res.status(statusCode).json({
     status: "success",
     token,
@@ -50,7 +50,7 @@ exports.signUp = asyncCatcher(async (req, res, next) => {
   );
 
   // Send confirmation email
-  console.log('it here')
+  console.log("it here sendi the email");
   const confirmationLink = `${req.protocol}://${req.get(
     "host"
   )}/api/users/confirm/${confirmationToken}`;
@@ -61,41 +61,89 @@ exports.signUp = asyncCatcher(async (req, res, next) => {
     subject: "Confirmation Email",
     message,
   });
-
+  console.log("email is sent");
   // Send token back to the client
   createSendToken(newUser, 200, res);
 });
+const determineUserRole = (email) => {
+  // Find the last occurrence of "@" in the email address
+  const lastIndex = email.lastIndexOf("@");
+  console.log("the last index is", lastIndex);
+
+  // Extract the domain part starting from the character after the last "@" symbol
+  const domain = email.substring(lastIndex + 1);
+  console.log(`this is the domain     ${domain} `);
+
+  // Split the domain by "." to get the top-level domain
+  const topLevelDomain = domain.split(".").slice(-2).join(".");
+  console.log(`this is topleveldomain   ${topLevelDomain}`);
+
+  const specifiedDomains = ["esi-sba.dz", "esi-alg.dz", "med-alg.dz"];
+
+  // Check if the extracted domain is included in the specified domains array
+  return specifiedDomains.includes(topLevelDomain) ? "brilliant" : "user";
+};
+
 exports.confirmRegistration = asyncCatcher(async (req, res, next) => {
   const { token } = req.params;
 
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Update user's confirmation status in the database
-    await User.findOneAndUpdate(
+    const user = await User.findOneAndUpdate(
       { email: decodedToken.email },
-      { verified: true }
+      { verified: true, userType: determineUserRole(decodedToken.email) },
+      { new: true } // This option ensures that the updated document is returned
     );
 
-    res.send("verifed ya chikour"); // Redirect to login page after confirmation
+    if (!user) {
+      return next(new AppError("User not found", 404));
+    }
+
+    console.log(`user type is after the function ${user.userType}`);
+    req.user = user;
+    //---------------------------------------------
+    //---------------------------------------------
+    //---------------------------------------------
+    // Update user's confirmation status in the database
+    // const user = await User.findOneAndUpdate(
+    //   { email: decodedToken.email },
+    //   { verified: true },
+
+    // );
+    // if (!user) {
+    //   return next(new AppError("User not found", 404));
+    // }
+    // const userType = determineUserRole(decodedToken.email);
+    // console.log(`user type is after the funciton ${userType}`);
+
+    // req.user = user;
+
+    // console.log(`this is req.user.userType${req.user.userType}`);
+
+    // // Add user role to req object for subsequent middleware to use
+    // req.user.userType = userType;
+    // console.log(`this is req.user.userType${req.user.userType}`);
+    // await user.save();
+    //---------------------------------------------//---------------------------------------------
+    //---------------------------------------------//---------------------------------------------
+    //---------------------------------------------//---------------------------------------------
+    res.redirect("http://localhost:3000/confirmation-succes"); // Redirect to login page after confirmation
   } catch (err) {
     // Handle invalid or expired token
     return next(new AppError("Invalid or expired token", 400));
   }
 });
+
 exports.login = asyncCatcher(async (req, res, next) => {
   const { email, password } = req.body;
-
   if (!email || !password) {
     return next(new AppError("Please provide email and password", 400));
   }
-
   const user = await User.findOne({ email }).select("+password");
-
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Incorrect email or password", 401));
   }
-
   createSendToken(user, 200, res);
 });
 
@@ -107,8 +155,10 @@ exports.protect = asyncCatcher(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
+    console.log("the token is from req.headers.auth");
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
+    console.log(`this token is from the cookies ${token}`);
   }
 
   if (!token) {
@@ -126,7 +176,7 @@ exports.protect = asyncCatcher(async (req, res, next) => {
     );
   }
   //CHECK IF THE USER DIDN'T CHANGE HIS PASSWORD
-  console.log(decode.iat);
+  console.log("this is the time of the decoding", decode.iat);
   if (currentUser.passwordChangedAfter(decode.iat)) {
     return next(new AppError("please relogin the password changed", 401));
   }
