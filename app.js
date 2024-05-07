@@ -65,7 +65,7 @@ app.use(
 // Set view engine and views directory
 
 // Serving static files
-app.use(express.static(path.join(__dirname, "public")));
+//app.use(express.static(path.join(__dirname, "public")));
 
 // Middleware for test
 app.use((req, res, next) => {

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Review = require("./review");
 
 // Define the common schema for blogs, resources, and courses
 const contentSchema = new mongoose.Schema({
@@ -26,7 +27,18 @@ const contentSchema = new mongoose.Schema({
   datePublished: {
     type: Date,
     default: Date.now,
-  },
+  },scrollprcnt:{
+    type:Number,
+    default:0,
+  },up:{
+    type:Number,
+    default:0
+  },down:{
+    type:Number,
+    default:0
+  },revusers:[mongoose.Schema.Types.ObjectId],
+  ref:"User",
+  default:[]
 });
 
 // Create multiple models using the same schema

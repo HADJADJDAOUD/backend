@@ -63,7 +63,13 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
     select: false,
-  },
+  },point:{
+    type:Number,
+    default:0,
+  },rank:{
+    type:Number,
+    default:1
+  }
 });
 
 userSchema.pre("save", async function (next) {
