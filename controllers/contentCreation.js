@@ -168,13 +168,14 @@ exports.getAllCourses = asyncCatcher(async (req, res, next) => {
   const populatedCourses = await Promise.all(courses.map(async(course) => {
   await course.populate("user_id", "name photo");
   return course
-  res.status(200).json({
-    status: "success",
-    data: {
-      courses: populatedCourses,
-    },
-  });
+  
 }));
+res.status(200).json({
+  status: "success",
+  data: {
+    courses: populatedCourses,
+  },
+});
 });
 
 exports.createCourse = asyncCatcher(async (req, res, next) => {
