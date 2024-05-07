@@ -36,6 +36,24 @@ const createSendToken = (user, statusCode, res) => {
     },
   });
 };
+const determineUserRole = (email) => {
+  // Find the last occurrence of "@" in the email address
+  const lastIndex = email.lastIndexOf("@");
+  console.log("the last index is", lastIndex);
+
+  // Extract the domain part starting from the character after the last "@" symbol
+  const domain = email.substring(lastIndex + 1);
+  console.log(`this is the domain     ${domain} `);
+
+  // Split the domain by "." to get the top-level domain
+  const topLevelDomain = domain.split(".").slice(-2).join(".");
+  console.log(`this is topleveldomain   ${topLevelDomain}`);
+
+  const specifiedDomains = ["esi-sba.dz", "esi-alg.dz", "med-alg.dz"];
+
+  // Check if the extracted domain is included in the specified domains array
+  return specifiedDomains.includes(topLevelDomain) ? "brilliant" : "user";
+};
 
 exports.signUp = asyncCatcher(async (req, res, next) => {
   const newUser = await User.create(req.body);
@@ -65,24 +83,8 @@ exports.signUp = asyncCatcher(async (req, res, next) => {
   // Send token back to the client
   createSendToken(newUser, 200, res);
 });
-const determineUserRole = (email) => {
-  // Find the last occurrence of "@" in the email address
-  const lastIndex = email.lastIndexOf("@");
-  console.log("the last index is", lastIndex);
-
-  // Extract the domain part starting from the character after the last "@" symbol
-  const domain = email.substring(lastIndex + 1);
-  console.log(`this is the domain     ${domain} `);
-
-  // Split the domain by "." to get the top-level domain
-  const topLevelDomain = domain.split(".").slice(-2).join(".");
-  console.log(`this is topleveldomain   ${topLevelDomain}`);
-
-  const specifiedDomains = ["esi-sba.dz", "esi-alg.dz", "med-alg.dz"];
-
-  // Check if the extracted domain is included in the specified domains array
-  return specifiedDomains.includes(topLevelDomain) ? "brilliant" : "user";
-};
+// THIS IS FINISHED THE SIGNUP
+//
 
 exports.confirmRegistration = asyncCatcher(async (req, res, next) => {
   const { token } = req.params;
@@ -128,7 +130,9 @@ exports.confirmRegistration = asyncCatcher(async (req, res, next) => {
     //---------------------------------------------//---------------------------------------------
     //---------------------------------------------//---------------------------------------------
     //---------------------------------------------//---------------------------------------------
-    res.redirect("http://localhost:3000/confirmation-succes"); // Redirect to login page after confirmation
+    res.redirect("prj://192.168.174.55/api/users/confirm");
+    //res.redirect("http://localhost:3000/confirmation-succes");
+    // Redirect to login page after confirmation
   } catch (err) {
     // Handle invalid or expired token
     return next(new AppError("Invalid or expired token", 400));

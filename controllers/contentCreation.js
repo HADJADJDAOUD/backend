@@ -9,15 +9,21 @@ exports.getAllBlogs = asyncCatcher(async (req, res, next) => {
   console.log(`this is the number of pages ${page}`);
 
   const blogs = await Blog.find()
-    .populate("user_id", "name photo")
+    .populate("user_id", "photo")
     .skip(skip)
     .limit(limit);
+  console.log("ya okhi");
+  console.log(blogs[0].text);
+  console.log(blogs[0]);
 
   const populatedBlogs = blogs.map((blog) => {
     // Access user details from the populated user_id field
+
     const { name, photo } = blog.user_id;
+    console.log(name);
     // Construct a new object with blog data and author info
     return {
+      title:blog.title, 
       _id: blog._id,
       text: blog.text,
       link: blog.link,
@@ -29,7 +35,7 @@ exports.getAllBlogs = asyncCatcher(async (req, res, next) => {
     };
   });
   console.log("this is the first blog user", populatedBlogs[0].author);
-  res.status(200).json(populatedBlogs);
+  res.status(200).json({ "data-size": populatedBlogs.length, populatedBlogs });
 });
 
 exports.createBlog = asyncCatcher(async (req, res, next) => {

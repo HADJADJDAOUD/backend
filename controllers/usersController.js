@@ -16,6 +16,7 @@ exports.getUser = asyncCatcher(async (req, res, next) => {
   const user = req.user;
   // Send the user's name and photo as a response
   res.status(200).json(user);
+  console.log("this is the username",user.name);
 });
 
 // exports.getAllUsers=handleFactory.getAll(User)

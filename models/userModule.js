@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "picture.png",
   },
+  bgphoto: {
+    type: String,
+    default: "one_piece.png",
+  },
   links: {
     type: Array,
   },
