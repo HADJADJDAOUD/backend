@@ -36,9 +36,11 @@ const contentSchema = new mongoose.Schema({
   },down:{
     type:Number,
     default:0
-  },revusers:[mongoose.Schema.Types.ObjectId],
+  },revusers:[{
+  type:mongoose.Schema.Types.ObjectId,
   ref:"User",
   default:[]
+}]
 });
 
 // Create multiple models using the same schema
