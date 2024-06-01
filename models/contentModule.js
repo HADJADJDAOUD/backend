@@ -17,7 +17,7 @@ const contentSchema = new mongoose.Schema({
   photo: {
     type: String,
     required: false,
-    default:"picture.png",
+    default: "picture.png",
   },
   video: {
     type: String,
@@ -36,6 +36,29 @@ const contentSchema = new mongoose.Schema({
   datePublished: {
     type: Date,
     default: Date.now,
+  },
+  scrollprcnt: {
+    type: Number,
+    default: 0,
+  },
+  up: {
+    type: Number,
+    default: 0,
+  },
+  down: {
+    type: Number,
+    default: 0,
+  },
+  revusers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: [],
+    },
+  ],
+  state: {
+    type: String,
+    default: "none",
   },
 });
 

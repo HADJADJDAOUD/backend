@@ -22,3 +22,4 @@ exports.getUser = asyncCatcher(async (req, res, next) => {
 // exports.getAllUsers=handleFactory.getAll(User)
 
 exports.getUserCv = handleFactory.getOne(User);
+exports.updateUserInfo=handleFactory.updateOne(User);

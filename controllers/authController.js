@@ -130,7 +130,7 @@ exports.confirmRegistration = asyncCatcher(async (req, res, next) => {
     //---------------------------------------------//---------------------------------------------
     //---------------------------------------------//---------------------------------------------
     //---------------------------------------------//---------------------------------------------
-    res.redirect("prj://192.168.174.55/api/users/confirm");
+    res.redirect("prj://192.168.192.55/api/users/confirm");
     //res.redirect("http://localhost:3000/confirmation-succes");
     // Redirect to login page after confirmation
   } catch (err) {
@@ -186,6 +186,7 @@ exports.protect = asyncCatcher(async (req, res, next) => {
   }
 
   req.user = currentUser;
+  console.log("this is in protect and this is req.user", req.user);
   next();
 });
 

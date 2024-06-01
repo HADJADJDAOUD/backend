@@ -2,11 +2,12 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const { type } = require("os");
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    // required: [true, "Please tell us your name!"],
+    required: [true, "Please tell us your name!"],
   },
   email: {
     type: String,
@@ -57,6 +58,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "esi-sba",
   },
+  media: {
+    type: [{
+      platform: String,
+      link: String
+    }],
+    default: []
+  },
   bio: {
     type: String,
   },
@@ -67,6 +75,14 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
     select: false,
+  },
+  point: {
+    type: Number,
+    default: 0,
+  },
+  rank: {
+    type: Number,
+    default: 1,
   },
 });
 
