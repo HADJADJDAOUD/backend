@@ -15,7 +15,16 @@ router.patch("/resetPassword/:token", authController.resetPassword);
 //// FIRST PAGE PART CVS
 router.get("/", userController.getAllUsers);
 // SEARCH ONE
-router.patch('/updateUserInfo',authController.protect,userController.updateUserInfo)
+router.patch(
+  "/updateUserInfo",
+  authController.protect,
+  userController.updateUserInfo
+);
+router.patch(
+  "/updateSkills",
+  authController.protect,
+  userController.updateUserInfo
+);
 
 /// MY PROFILE
 router.get("/getMe", authController.protect, userController.getUser);
