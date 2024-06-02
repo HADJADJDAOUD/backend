@@ -23,13 +23,13 @@ exports.getUser = asyncCatcher(async (req, res, next) => {
   console.log("this is the username",user.name);
 });
 exports.updateuser=asyncCatcher(async (req, res, next) => {
-  await User.findOneAndUpdate({_id:req.body.user._id},req.body)
+  await User.findOneAndUpdate({_id:req.user._id},req.body)
   res.json({
     seccess:true,
   }) 
 })
 // exports.deletuser=asyncCatcher(async (req, res, next) => {
-//   await User.findOneAndDelete(req.body.user._id)
+//   await User.findOneAndDelete(req.user._id)
 //   res.json({
 //     seccess:true,
 //   })
@@ -37,7 +37,7 @@ exports.updateuser=asyncCatcher(async (req, res, next) => {
 
 exports.updateeducation=asyncCatcher(async (req, res, next) => {
   try{
-const myuser= await User.findOneAndUpdate({_id:req.body.user._id},{$push:{education:req.body.data}});
+const myuser= await User.findOneAndUpdate({_id:req.user._id},{$push:{education:req.body.data}});
 res.json({
   seccess:true,
 })
@@ -52,7 +52,7 @@ res.json({
 })
 exports.deleteeducation=asyncCatcher(async (req, res, next) => {
   try{
-const myuser= await User.findOneAndUpdate({_id:req.body.user._id},{$pull:{education:{$in:[req.body.data]}}});
+const myuser= await User.findOneAndUpdate({_id:req.user._id},{$pull:{education:{$in:[req.body.data]}}});
 res.json({
   seccess:true,
 })
@@ -67,7 +67,7 @@ res.json({
 })
 exports.updateskills=asyncCatcher(async (req, res, next) => {
   try{
-const myuser= await User.findOneAndUpdate({_id:req.body.user._id},{$push:{skills:req.body.data}});
+const myuser= await User.findOneAndUpdate({_id:req.user._id},{$push:{skills:req.body.data}});
 res.json({
   seccess:true,
 })
@@ -82,7 +82,7 @@ res.json({
 })
 exports.deleteskills=asyncCatcher(async (req, res, next) => {
   try{
-const myuser= await User.findOneAndUpdate({_id:req.body.user._id},{$pull:{skills:{$in:[req.body.data]}}});
+const myuser= await User.findOneAndUpdate({_id:req.user._id},{$pull:{skills:{$in:[req.body.data]}}});
 res.json({
   seccess:true,
 })
@@ -100,7 +100,7 @@ res.json({
 
 exports.updateslicences=asyncCatcher(async (req, res, next) => {
   try{
-const myuser= await User.findOneAndUpdate({_id:req.body.user._id},{$push:{licences:req.body.data}});
+const myuser= await User.findOneAndUpdate({_id:req.user._id},{$push:{licences:req.body.data}});
 res.json({
   seccess:true,
 })
@@ -115,7 +115,7 @@ res.json({
 })
 exports.deletelicences=asyncCatcher(async (req, res, next) => {
   try{
-const myuser= await User.findOneAndUpdate({_id:req.body.user._id},{$pull:{licences:{$in:[req.body.data]}}});
+const myuser= await User.findOneAndUpdate({_id:req.user._id},{$pull:{licences:{$in:[req.body.data]}}});
 res.json({
   seccess:true,
 })
@@ -134,7 +134,7 @@ res.json({
 
 exports.updateslanguage=asyncCatcher(async (req, res, next) => {
   try{
-const myuser= await User.findOneAndUpdate({_id:req.body.user._id},{$push:{language:req.body.data}});
+const myuser= await User.findOneAndUpdate({_id:req.user._id},{$push:{language:req.body.data}});
 res.json({
   seccess:true,
 })
@@ -149,7 +149,7 @@ res.json({
 })
 exports.deletelanguage=asyncCatcher(async (req, res, next) => {
   try{
-const myuser= await User.findOneAndUpdate({_id:req.body.user._id},{$pull:{language:{$in:[req.body.data]}}});
+const myuser= await User.findOneAndUpdate({_id:req.user._id},{$pull:{language:{$in:[req.body.data]}}});
 res.json({
   seccess:true,
 })

@@ -46,7 +46,7 @@ catch (error) {
 exports.createBlog = asyncCatcher(async (req, res, next) => {
   try{
   const blog = await Blog.create(req.body.data); 
-  blog.user_id=req.body.user._id;
+  blog.user_id=req.user._id;
   console.log("the id is:.......................")
   console.log(blog.user_id)
   const user= await User.findOneAndUpdate({_id:blog.user_id},{$inc:{points:30}})
@@ -103,7 +103,7 @@ catch (error) {
 exports.blogadduprev=asyncCatcher(async (req, res, next) => {
 try{
  const blog=await Blog.findOneAndUpdate({_id : req.params.blogID},{$inc: { up: 1 },$push: { 
-  revusers: req.body.user._id
+  revusers: req.user._id
 }});
 console.log(blog)
 var plus=0;
@@ -131,7 +131,7 @@ catch (error) {
 exports.blogadddownrev=asyncCatcher(async (req, res, next) => {
   try{
   const blog=await Blog.findOneAndUpdate({_id : req.params.blogID},{$inc: { down: 1 },$push: { 
-   revusers: req.body.user._id
+   revusers: req.user._id
  }});
  console.log(blog)
  const rev=blog.up-blog.down;
@@ -160,7 +160,7 @@ catch (error) {
 exports.blogremuprev=asyncCatcher(async (req, res, next) => {
   try{
   const blog=await Blog.findOneAndUpdate({_id : req.params.blogID},{$inc: { up: -1 },$pull: { 
-   revusers: { $in: [req.body.user._id] } 
+   revusers: { $in: [req.user._id] } 
  }});
  const rev=blog.up-blog.down;
 var plus=0;
@@ -323,7 +323,7 @@ exports.getAllliveCourses = asyncCatcher(async (req, res, next) => {
 exports.createCourse = asyncCatcher(async (req, res, next) => {
   try{
   const course = await Course.create(req.body);     
-  course.user_id=req.body.user._id;
+  course.user_id=req.user._id;
   await User.findOneAndUpdate({_id:course.user_id},{$inc:{points:50}});
   const stats = await Statistics.findOne();
 if (!stats) {
@@ -406,7 +406,7 @@ exports.getAllResources = asyncCatcher(async (req, res, next) => {
 exports.createResource = asyncCatcher(async (req, res, next) => {
   try{
   const resource = await Resource.create(req.body);
-  resource.User=req.body.user._id;
+  resource.User=req.user._id;
   await User.findOneAndUpdate({_id:resource.user_id},{$inc:{points:20}});
   const stats = await Statistics.findOne();
   if (!stats) {
@@ -533,7 +533,7 @@ const resource=await Resource.findById(req.params.resourceID)
 
 
 const myuser= await User.findOneAndUpdate({_id:resource.user_id},{$inc:{points:4}});
-const myuserr= await User.findOneAndUpdate({_id:req.body.user._id},{$push:{saves:req.params.resourceID }});
+const myuserr= await User.findOneAndUpdate({_id:req.user._id},{$push:{saves:req.params.resourceID }});
 res.json({
   seccess:true,
 })
@@ -550,7 +550,7 @@ exports.saveblog=asyncCatcher(async (req, res, next) => {
   try{
 const blog=await Blog.findById(req.params.blogID)
 const myuser= await User.findOneAndUpdate({_id:blog.user_id},{$inc:{points:4}});
-const myuserr= await User.findOneAndUpdate({_id:req.body.user._id},{$push:{saves:req.params.blogID } }); 
+const myuserr= await User.findOneAndUpdate({_id:req.user._id},{$push:{saves:req.params.blogID } }); 
 res.json({
   seccess:true,
 })
@@ -571,7 +571,7 @@ const course=await Course.findById(req.params.courseID)
 
 
 const myuser= await User.findOneAndUpdate({_id:course.user_id},{$inc:{points:4}});
-const myuserr= await User.findOneAndUpdate({_id:req.body.user._id},{$push:{saves: {$in:req.paramscourseID } }});
+const myuserr= await User.findOneAndUpdate({_id:req.user._id},{$push:{saves: {$in:req.paramscourseID } }});
 res.json({
   seccess:true,
 })

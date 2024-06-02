@@ -9,7 +9,23 @@ total_points:{
 type:Number,
     default:0
 },categoriesinfo:[{
-    type:Object,
+    category: {
+        type: String,
+        required: true
+    },
+    num: {
+        type: Number,
+        required: true
+    }
+}],mostsearchedcat:[{
+    category: {
+        type: String,
+        required: true
+    },
+    num: {
+        type: Number,
+        required: true
+    }
 }]
 });
 
