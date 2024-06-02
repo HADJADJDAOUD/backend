@@ -6,15 +6,11 @@ const  User  = require("../../userAuth/models/userModule");
 const {Statistics}=require('../models/StatisticsModule');
 const bodyParser=require('body-parser');
 const { Int32 } = require("mongodb");
-const app=require('express')();
-app.use(bodyParser.urlencoded({ extended: false }))
+const app = require("express")();
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
-app.use(bodyParser.json())
-
-
-
-
+app.use(bodyParser.json());
 
 // exports.getsortedbloges=asyncCatcher(async(req,res,next)=>{
 //  const sortedbloges=await Blog.find().sort({point:1}); 
@@ -23,7 +19,7 @@ app.use(bodyParser.json())
 exports.getAllBlogs = asyncCatcher(async (req, res, next) => {
   try{
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10; // Adjust the limit as needed
+  const limit = parseInt(req.query.limit) || 100; // Adjust the limit as needed
   const skip = (page - 1) * limit;
   console.log(`this is the number of pages ${page}`);
   const blogs = await Blog.find()
@@ -47,7 +43,6 @@ catch (error) {
  });
 }
 });
-
 exports.createBlog = asyncCatcher(async (req, res, next) => {
   try{
   const blog = await Blog.create(req.body.data); 

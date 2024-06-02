@@ -3,6 +3,7 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const { stringify } = require("querystring");
+const { type } = require("os");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -43,6 +44,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "picture.png",
   },
+  bgphoto: {
+    type: String,
+    default: "one_piece.png",
+  },
   links: {
     type: Array,
   },
@@ -54,6 +59,13 @@ const userSchema = new mongoose.Schema({
     type: Object,
     default: "esi-sba",
   }],
+  media: {
+    type: [{
+      platform: String,
+      link: String
+    }],
+    default: []
+  },
   bio: {
     type: String,
   },

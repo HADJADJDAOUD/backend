@@ -4,6 +4,10 @@ const { referrerPolicy } = require("helmet");
 
 // Define the common schema for blogs, resources, and courses
 const contentSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    default: "my blog",
+  },
   text: {
     type: String,
     // required: true,
@@ -17,7 +21,8 @@ const contentSchema = new mongoose.Schema({
   },
   photo: {
     type: String,
-    // required: false,
+    required: false,
+    default: "picture.png",
   },
   video: {
     type: String,
@@ -25,8 +30,13 @@ const contentSchema = new mongoose.Schema({
   },
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    // required: false,
+    ref: "User", // Reference to the User model
+    required: true,
+    populate: {
+      // Specify which fields you want to populate
+      path: "user_id",
+      select: "name photo", // Include 'name' and 'photo' fields
+    },
   },
   categories:[{
     type:String,

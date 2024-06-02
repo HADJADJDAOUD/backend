@@ -15,10 +15,15 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const express = require("express");
 const app = express();
+app.use((req, res, next) => {
+  console.log(`Received request: ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3000", // Replace with your frontend URL
+    origin: "*", // Replace with your frontend URL
     credentials: true,
   })
 );

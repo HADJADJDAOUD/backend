@@ -27,6 +27,16 @@ router.get("/", userController.getAllUsers);
 router.get("/users/:userID", userController.getUser);
 // SEARCH ONE
   
+router.patch(
+  "/updateUserInfo",
+  authController.protect,
+  userController.updateUserInfo
+);
+router.patch(
+  "/updateSkills",
+  authController.protect,
+  userController.updateUserInfo
+);
 
 /// MY PROFILE
 // router.get("/getMe", authController.protect, userController.getUser);
