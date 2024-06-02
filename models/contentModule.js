@@ -107,9 +107,6 @@ const contentSchema2 = new mongoose.Schema({
   datePublished: {
     type: Date,
     default: Date.now,
-  },scrollprcnt:{
-    type:Number,
-    default:0,
   },up:{
     type:Number,
     default:0
