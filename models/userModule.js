@@ -2,18 +2,19 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const { stringify } = require("querystring");
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please tell us your name!"],
+    // required: [true, "Please tell us your name!"],
   },
   email: {
     type: String,
-    required: [true, "Please provide your email"],
-    unique: true,
+    // required: [true, "Please provide your email"],
+    // unique: true,
     lowercase: true,
-    validate: [validator.isEmail, "Please provide a valid email"],
+    // validate: [validator.isEmail, "Please provide a valid email"],
   },
   userType: {
     type: String,
@@ -23,14 +24,14 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "Please provide a password"],
+    // required: [true, "Please provide a password"],
     minlength: 8,
     select: false,
   },
   passwordConfirm: {
     type: String,
     select: false,
-    required: [true, "Please confirm your password"],
+    // required: [true, "Please confirm your password"],
     validate: {
       validator: function (el) {
         return el === this.password;
@@ -45,17 +46,27 @@ const userSchema = new mongoose.Schema({
   links: {
     type: Array,
   },
-  skills: {
-    type: Array,
+  skills: [{
+    type: Object,
     default: "there is no skills",
-  },
-  education: {
-    type: String,
+  }],
+  education: [{
+    type: Object,
     default: "esi-sba",
-  },
+  }],
   bio: {
     type: String,
   },
+  Experiences:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:"Experience",
+    default:[]
+  }]
+  , licenses:[{
+    type:Object
+  }],language:[{
+    type:Object
+  }],
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
@@ -63,13 +74,17 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
     select: false,
-  },point:{
+  },points:{
     type:Number,
     default:0,
   },rank:{
     type:Number,
     default:1
-  }
+  },saves:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:"Blog,Cours,Resourse",
+    default:[]
+  }]
 });
 
 userSchema.pre("save", async function (next) {

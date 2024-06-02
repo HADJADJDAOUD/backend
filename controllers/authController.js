@@ -181,7 +181,7 @@ exports.protect = asyncCatcher(async (req, res, next) => {
     return next(new AppError("please relogin the password changed", 401));
   }
 
-  req.user = currentUser;
+  res.user = currentUser;
   next();
 });
 
