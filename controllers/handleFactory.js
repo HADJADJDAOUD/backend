@@ -1,6 +1,6 @@
 const asyncCatcher = require("./../utils/asyncCatcher");
-const AppError = require("../../backend/utils/appError");
-const APIFeatures = require("../../backend/utils/apiFeatures");
+const AppError = require("./../utils/appError");
+const APIFeatures = require("../utils/apiFeatures");
 exports.deleteOne = (Model) =>
   asyncCatcher(async (req, res, next) => {
     const doc = await Model.findByIdAndDelete(req.params.id);
