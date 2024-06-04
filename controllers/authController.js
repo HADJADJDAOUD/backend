@@ -104,33 +104,9 @@ exports.confirmRegistration = asyncCatcher(async (req, res, next) => {
 
     console.log(`user type is after the function ${user.userType}`);
     req.user = user;
-    //---------------------------------------------
-    //---------------------------------------------
-    //---------------------------------------------
-    // Update user's confirmation status in the database
-    // const user = await User.findOneAndUpdate(
-    //   { email: decodedToken.email },
-    //   { verified: true },
 
-    // );
-    // if (!user) {
-    //   return next(new AppError("User not found", 404));
-    // }
-    // const userType = determineUserRole(decodedToken.email);
-    // console.log(`user type is after the funciton ${userType}`);
-
-    // req.user = user;
-
-    // console.log(`this is req.user.userType${req.user.userType}`);
-
-    // // Add user role to req object for subsequent middleware to use
-    // req.user.userType = userType;
-    // console.log(`this is req.user.userType${req.user.userType}`);
-    // await user.save();
-    //---------------------------------------------//---------------------------------------------
-    //---------------------------------------------//---------------------------------------------
-    //---------------------------------------------//---------------------------------------------
     res.redirect("prj://192.168.192.55/api/users/confirm");
+    //res.redirect("/confirmation-success");
     //res.redirect("http://localhost:3000/confirmation-succes");
     // Redirect to login page after confirmation
   } catch (err) {

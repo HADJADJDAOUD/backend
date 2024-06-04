@@ -60,6 +60,16 @@ const contentSchema = new mongoose.Schema({
     type: String,
     default: "none",
   },
+  saves: {
+    type: Number,
+    default: 0,
+  },
+  categories: [
+    {
+      type: String,
+      // required:true,
+    },
+  ],
 });
 
 // Create multiple models using the same schema

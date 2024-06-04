@@ -1,7 +1,7 @@
 const authController = require("../controllers/authController");
 const userController = require("../controllers/usersController");
 const contentCreation = require("../controllers/contentCreation");
-const experienceController = require("../controllers/experiencesController");
+const experienceController = require("../controllers/profileController");
 const express = require("express");
 const { Experience } = require("../models/experienceModule");
 const router = express.Router();
@@ -32,6 +32,22 @@ router.patch(
   authController.protect,
   experienceController.addExperience
 );
+router.patch(
+  "/addEducations",
+  authController.protect,
+  experienceController.addEducations
+);
+router.patch(
+  "/addCertification",
+  authController.protect,
+  experienceController.addCertification
+);
+router.patch(
+  "/addLanguage",
+  authController.protect,
+  experienceController.addLanguage
+);
 /// MY PROFILE
 router.get("/getMe", authController.protect, userController.getUser);
+router.get('/allUsers',userController.getAllUsers);
 module.exports = router;

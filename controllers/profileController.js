@@ -95,3 +95,95 @@ exports.addExperience = async (req, res, next) => {
     });
   }
 };
+
+exports.addEducations = async (req, res, next) => {
+  try {
+    const userId = req.user._id; // Assuming you have the user id from authentication middleware
+    const { school, field, degree, startDate, endDate } = req.body;
+
+    const user = await User.findById(userId);
+
+    // Add the new experience
+    user.Education.push({
+      endDate,
+      startDate,
+      degree,
+      field,
+      school,
+    });
+
+    await user.save();
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        user,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
+
+exports.addCertification = async (req, res, next) => {
+  try {
+    const userId = req.user._id; // Assuming you have the user id from authentication middleware
+    const { name, org, url, startDate } = req.body;
+
+    const user = await User.findById(userId);
+
+    // Add the new experience
+    user.Certification.push({
+      name,
+      org,
+      url,
+      startDate,
+    });
+
+    await user.save();
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        user,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
+
+exports.addLanguage = async (req, res, next) => {
+  try {
+    const userId = req.user._id; // Assuming you have the user id from authentication middleware
+    const { language, proficiency,} = req.body;
+
+    const user = await User.findById(userId);
+
+    // Add the new experience
+    user.Language.push({
+     language,
+     proficiency,
+    });
+
+    await user.save();
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        user,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};

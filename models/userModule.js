@@ -11,6 +11,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please tell us your name!"],
   },
+  media: {
+    type: [
+      {
+        platform: String,
+        link: String,
+      },
+    ],
+    default: [],
+  },
   email: {
     type: String,
     required: [true, "Please provide your email"],
@@ -42,15 +51,17 @@ const userSchema = new mongoose.Schema({
     },
   },
   Experience: {
-    type: [{
-      title: String,
-      companyName: String,
-      EmploymentType:String,
-      location:String,
-      startDate:String,
-      endDate:String,
-    }],
-    default: []
+    type: [
+      {
+        title: String,
+        companyName: String,
+        EmploymentType: String,
+        location: String,
+        startDate: String,
+        endDate: String,
+      },
+    ],
+    default: [],
   },
   photo: {
     type: String,
@@ -67,16 +78,38 @@ const userSchema = new mongoose.Schema({
     type: Array,
     default: "there is no skills",
   },
-  education: {
-    type: String,
-    default: "esi-sba",
+
+  Education: {
+    type: [
+      {
+        school: String,
+        field: String,
+        degree: String,
+        startDate: String,
+        endDate: String,
+      },
+    ],
+    default: [],
   },
-  media: {
-    type: [{
-      platform: String,
-      link: String
-    }],
-    default: []
+  Certification: {
+    type: [
+      {
+        name: String,
+        org: String,
+        url: String,
+        startDate: String,
+      },
+    ],
+    default: [],
+  },
+  Language: {
+    type: [
+      {
+        language: String,
+        proficiency: String,
+      },
+    ],
+    default: [],
   },
   bio: {
     type: String,
@@ -89,7 +122,7 @@ const userSchema = new mongoose.Schema({
     default: false,
     select: false,
   },
-  point: {
+  points: {
     type: Number,
     default: 0,
   },
