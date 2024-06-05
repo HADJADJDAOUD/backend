@@ -45,7 +45,7 @@ exports.getfilteredusers = asyncCatcher(async (req, res, next) => {
 exports.getfilteredblogs = asyncCatcher(async (req, res, next) => {
   try {
     const filtre = req.query.filtre ? req.query.filtre.split(",") : [];
-    console.log(filtre);
+    console.log(filtre); 
     const blogs = await Blog.find({ categories: { $in: filtre } });
     const stats = await Statistics.findOne();
     if (!stats) {

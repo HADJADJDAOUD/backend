@@ -130,6 +130,26 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 1,
   },
+  saves: {
+    blogs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Blog",
+      },
+    ],
+    resources: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Resource",
+      },
+    ],
+    courses: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
+      },
+    ],
+  },
 });
 
 userSchema.pre("save", async function (next) {

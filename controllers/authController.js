@@ -162,7 +162,7 @@ exports.protect = asyncCatcher(async (req, res, next) => {
   }
 
   req.user = currentUser;
-  console.log("this is in protect and this is req.user", req.user);
+  console.log("this is in protect and this is req.user", req.user.name);
   next();
 });
 

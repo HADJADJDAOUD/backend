@@ -49,5 +49,17 @@ router.patch(
 );
 /// MY PROFILE
 router.get("/getMe", authController.protect, userController.getUser);
-router.get('/allUsers',userController.getAllUsers);
+router.get("/allUsers", userController.getAllUsers);
+router.delete("/deleteExperience", experienceController.removeExperince);
+router.get("/saves", authController.protect, userController.getUsersaves);
+router.post(
+  "/savecontent",
+  authController.protect,
+  contentCreation.saveContent
+);
+router.delete(
+  "/deletesavecontent",
+  authController.protect,
+  contentCreation.deleteSavedContent
+);
 module.exports = router;

@@ -95,6 +95,24 @@ exports.addExperience = async (req, res, next) => {
     });
   }
 };
+exports.removeExperince = asyncCatcher(async (req, res, next) => {
+  try {
+    await Experience.findOneAndDelete(req.params.expID);
+    res.status(201).json({
+      status: "success",
+    });
+    const myuser = await User.findOneAndUpdate(
+      { _id: req.body.user._id },
+      { $pull: { Experiences: { $in: [req.params.expID] } } }
+    );
+  } catch (error) {
+    console.error("Error adding deleting experience:", error);
+    res.status(500).json({
+      status: "error",
+      message: "Failed to delete experience",
+    });
+  }
+});
 
 exports.addEducations = async (req, res, next) => {
   try {
@@ -162,14 +180,14 @@ exports.addCertification = async (req, res, next) => {
 exports.addLanguage = async (req, res, next) => {
   try {
     const userId = req.user._id; // Assuming you have the user id from authentication middleware
-    const { language, proficiency,} = req.body;
+    const { language, proficiency } = req.body;
 
     const user = await User.findById(userId);
 
     // Add the new experience
     user.Language.push({
-     language,
-     proficiency,
+      language,
+      proficiency,
     });
 
     await user.save();
